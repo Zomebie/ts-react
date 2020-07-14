@@ -1,25 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useCallback, useRef } from "react";
+import TodoWapper from "./TodoWrapper";
+import InputTodoItem from "./InputTodoItem";
+import TodoItemList from "./TodoItemList";
 
 function App() {
+  const [todos, setTodos] = useState<
+    Array<{
+      id: React.MutableRefObject<number>;
+      text: string;
+      checked: boolean;
+    }>
+  >([]);
+
+  const nextId = useRef(1);
+
+  const onAdd = useCallback(
+    (text: string) => {
+      const todo = {
+        id: nextId,
+        text: text,
+        checked: false,
+      };
+
+      setTodos(todos.concat(todo));
+    },
+    [todos]
+  );
+
+  const onRemove = useCallback(
+    (id: React.MutableRefObject<number>) => {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    },
+    [todos]
+  );
+
+  const onToggle = useCallback(
+    (id: React.MutableRefObject<number>) => {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, checked: !todo.checked } : todo
+        )
+      );
+    },
+    [todos]
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TodoWapper>
+      <InputTodoItem onAdd={onAdd} />
+      <TodoItemList todos={todos} onRemove={onRemove} onToggle={onToggle} />
+    </TodoWapper>
   );
 }
 
