@@ -6,7 +6,7 @@ import TodoItemList from "./TodoItemList";
 function App() {
   const [todos, setTodos] = useState<
     Array<{
-      id: React.MutableRefObject<number>;
+      id: number;
       text: string;
       checked: boolean;
     }>
@@ -17,25 +17,26 @@ function App() {
   const onAdd = useCallback(
     (text: string) => {
       const todo = {
-        id: nextId,
+        id: nextId.current,
         text: text,
         checked: false,
       };
 
       setTodos(todos.concat(todo));
+      nextId.current += 1;
     },
     [todos]
   );
 
   const onRemove = useCallback(
-    (id: React.MutableRefObject<number>) => {
+    (id: number) => {
       setTodos(todos.filter((todo) => todo.id !== id));
     },
     [todos]
   );
 
   const onToggle = useCallback(
-    (id: React.MutableRefObject<number>) => {
+    (id: number) => {
       setTodos(
         todos.map((todo) =>
           todo.id === id ? { ...todo, checked: !todo.checked } : todo

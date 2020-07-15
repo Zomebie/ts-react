@@ -10,19 +10,24 @@ const StyledDiv = styled.div`
 
 type TodoItemListProps = {
   todos: Array<{
-    id: React.MutableRefObject<number>;
+    id: number;
     text: string;
     checked: boolean;
   }>;
-  onRemove: (id: React.MutableRefObject<number>) => void;
-  onToggle: (id: React.MutableRefObject<number>) => void;
+  onRemove: (id: number) => void;
+  onToggle: (id: number) => void;
 };
 
 const TodoItemList = ({ todos, onRemove, onToggle }: TodoItemListProps) => {
   return (
     <StyledDiv>
       {todos.map((todo) => (
-        <TodoItem todo={todo} onRemove={onRemove} onToggle={onToggle} />
+        <TodoItem
+          todo={todo}
+          key={todo.id}
+          onRemove={onRemove}
+          onToggle={onToggle}
+        />
       ))}
     </StyledDiv>
   );

@@ -60,9 +60,9 @@ const StyledRemoveBtn = styled.div`
 `;
 
 type TodoItemProps = {
-  todo: { id: React.MutableRefObject<number>; text: string; checked: boolean };
-  onRemove: (id: React.MutableRefObject<number>) => void;
-  onToggle: (id: React.MutableRefObject<number>) => void;
+  todo: { id: number; text: string; checked: boolean };
+  onRemove: (id: number) => void;
+  onToggle: (id: number) => void;
 };
 
 const TodoItem = ({ todo, onRemove, onToggle }: TodoItemProps) => {
